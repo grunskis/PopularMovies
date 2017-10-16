@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="sort_order">Toggle sort order</string>
+    <string name="error_message">Failed to load movie data. Please try again…</string>
+    <string name="popular">Popular Movies</string>
+    <string name="top_rated">Top Rated Movies</string>
+    <string name="favorites">Favorite Movies</string>
+    <string name="reload">Reload</string>
+    <string name="design_title">Lost in Translation</string>
+    <string name="design_year">2003</string>
+    <string name="design_rating">73%</string>
+    <string name="design_plot">Two lost souls visiting Tokyo — the young, neglected wife of a photographer and a washed-up movie star shooting a TV commercial — find an odd solace and pensive freedom to be real in each other\'s company, away from their lives in America.</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+    <string name="favorite">Mark as favorite</string>
+    <string name="show_popular">Popular</string>
+    <string name="show_favorites">Favorites</string>
+    <string name="show_top_rated">Top Rated</string>
+</resources>
