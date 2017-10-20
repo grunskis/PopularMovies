@@ -35,7 +35,6 @@ public class MoviePosterAdapter extends
     public void onBindViewHolder(MoviePosterAdapterViewHolder holder, int position) {
         URL posterURL = mMovies[position].getPosterUrl();
         Glide.with(holder.mImageView).load(posterURL).into(holder.mImageView);
-        // TODO: 18.10.17 check if caching is enabled by default
     }
 
     @Override

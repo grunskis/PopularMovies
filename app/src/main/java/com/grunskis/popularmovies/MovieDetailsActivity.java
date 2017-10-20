@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -99,6 +100,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoadFinished(Loader<Trailer[]> loader, Trailer[] data) {
                     if (data != null) {
                         mTrailerAdapter.setTrailers(data);
+
+                        if (data.length > 0) {
+                            mNoTrailers.setVisibility(View.GONE);
+                        } else {
+                            mNoTrailers.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         Log.e(TAG, "Failed to fetch trailers");
                     }
@@ -108,6 +115,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoaderReset(Loader<Trailer[]> loader) {
                 }
             };
+    private TextView mNoTrailers;
 
     private RecyclerView mReviewList;
     private ReviewAdapter mReviewAdapter;
@@ -158,6 +166,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoadFinished(Loader<Review[]> loader, Review[] data) {
                     if (data != null) {
                         mReviewAdapter.setReviews(data);
+
+                        if (data.length > 0) {
+                            mNoReviews.setVisibility(View.GONE);
+                        } else {
+                            mNoReviews.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         Log.e(TAG, "Failed to fetch trailers");
                     }
@@ -167,7 +181,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoaderReset(Loader<Review[]> loader) {
                 }
             };
-
+    private TextView mNoReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,12 +199,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         mTrailerList.setLayoutManager(trailerLayoutManager);
         mTrailerList.setHasFixedSize(true);
         mTrailerList.setNestedScrollingEnabled(false);
+        mNoTrailers = (TextView) findViewById(R.id.no_trailers);
 
         mReviewList = (RecyclerView) findViewById(R.id.rv_reviews);
         LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this);
         mReviewList.setLayoutManager(reviewLayoutManager);
         mReviewList.setHasFixedSize(true);
         mReviewList.setNestedScrollingEnabled(false);
+        mNoReviews = (TextView) findViewById(R.id.no_reviews);
 
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
@@ -214,7 +230,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             mVoteAverage.setText(String.valueOf(rating.intValue()) + '%');
             mPlot.setText(mMovie.getPlot());
 
-            // TODO: 18.10.17 show some text when there are no trailers available
             LoaderManager loaderManager = getLoaderManager();
 
             Bundle bundle = new Bundle();

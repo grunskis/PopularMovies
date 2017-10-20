@@ -16,4 +16,6 @@
     <string name="show_popular">Popular</string>
     <string name="show_favorites">Favorites</string>
     <string name="show_top_rated">Top Rated</string>
+    <string name="there_are_no_reviews_for_this_movie">There are no reviews for this movie</string>
+    <string name="there_are_no_trailers_for_this_movie">There are no trailers for this movie</string>
 </resources>
