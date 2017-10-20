@@ -10,16 +10,19 @@
         android:id="@+id/tv_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:padding="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
         tools:text="John Doe" />
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:padding="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Proin in orci vitae sem aliquam porta dapibus id dui. Nam rutrum eget arcu sed ornare. Aliquam eu enim consequat, gravida augue eget, gravida augue. Aliquam dapibus vestibulum lacinia. In varius egestas risus vel scelerisque. Nulla facilisi. Proin sed mollis elit, sed blandit turpis. Cras ut felis a leo volutpat bibendum. Mauris eleifend imperdiet faucibus. Phasellus vitae semper nisl. " />
 
 </LinearLayout>
