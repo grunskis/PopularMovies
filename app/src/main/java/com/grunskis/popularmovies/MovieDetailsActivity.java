@@ -8,6 +8,8 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -188,6 +190,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         mReviewList.setLayoutManager(reviewLayoutManager);
         mReviewList.setHasFixedSize(true);
 
+        ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         Intent intent = getIntent();
         if (intent.hasExtra("movie")) {
             mMovie = intent.getParcelableExtra("movie");
@@ -244,20 +251,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.favorite_yes_no) {
-            String toastMessage;
-            if (!mIsFavorite) {
-                addMovieToFavorites(mMovie);
-                mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_black_24dp);
-                toastMessage = mMovie.getTitle() + " added to favorites!";
-            } else {
-                removeMovieFromFavorites(mMovie);
-                mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_border_black_24dp);
-                toastMessage = mMovie.getTitle() + " removed from favorites!";
-            }
-            mIsFavorite = !mIsFavorite;
-            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.favorite_yes_no:
+                String toastMessage;
+                if (!mIsFavorite) {
+                    addMovieToFavorites(mMovie);
+                    mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_black_24dp);
+                    toastMessage = mMovie.getTitle() + " added to favorites!";
+                } else {
+                    removeMovieFromFavorites(mMovie);
+                    mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_border_black_24dp);
+                    toastMessage = mMovie.getTitle() + " removed from favorites!";
+                }
+                mIsFavorite = !mIsFavorite;
+                Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+                return true;
+
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
