@@ -35,7 +35,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
 
     @Override
     public void onBindViewHolder(TrailerAdapterViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder called " + position);
         holder.mName.setText(mTrailers[position].getName());
     }
 
@@ -60,7 +59,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         public TrailerAdapterViewHolder(View itemView) {
             super(itemView);
 
-            // TODO: 18.10.17 use binding?
             mName = (TextView) itemView.findViewById(R.id.tv_trailer);
             mName.setOnClickListener(this);
         }

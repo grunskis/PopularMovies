@@ -184,11 +184,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         LinearLayoutManager trailerLayoutManager = new LinearLayoutManager(this);
         mTrailerList.setLayoutManager(trailerLayoutManager);
         mTrailerList.setHasFixedSize(true);
+        mTrailerList.setNestedScrollingEnabled(false);
 
         mReviewList = (RecyclerView) findViewById(R.id.rv_reviews);
         LinearLayoutManager reviewLayoutManager = new LinearLayoutManager(this);
         mReviewList.setLayoutManager(reviewLayoutManager);
         mReviewList.setHasFixedSize(true);
+        mReviewList.setNestedScrollingEnabled(false);
 
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
