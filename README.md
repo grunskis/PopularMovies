@@ -1,4 +1,4 @@
-# PopularMovies1
+# PopularMovies
 
 Assignment from Android Developer Nanodegree Program.
 
