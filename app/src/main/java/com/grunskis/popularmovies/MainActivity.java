@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements
                         while (data.moveToNext()) {
                             int id = data.getInt(INDEX_MOVIE_ID);
                             String title = data.getString(INDEX_MOVIE_TITLE);
-                            Date releaseDate = new Date(data.getInt(INDEX_MOVIE_RELEASE_DATE));
+                            Date releaseDate = new Date(data.getLong(INDEX_MOVIE_RELEASE_DATE));
 
                             URL posterUrl = null;
                             try {
