@@ -294,6 +294,25 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        int menuId = -1;
+        switch (mSortOrder) {
+            case SORT_ORDER_POPULAR:
+                menuId = R.id.show_popular;
+                break;
+
+            case SORT_ORDER_TOP_RATED:
+                menuId = R.id.show_top_rated;
+                break;
+
+            case SORT_ORDER_FAVORITES:
+                menuId = R.id.show_favorites;
+                break;
+        }
+        if (menuId > 0) {
+            menu.findItem(menuId).setChecked(true);
+        }
+
         return true;
     }
 
