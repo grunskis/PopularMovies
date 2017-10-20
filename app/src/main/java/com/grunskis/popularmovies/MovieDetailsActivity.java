@@ -1,11 +1,11 @@
 package com.grunskis.popularmovies;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.grunskis.popularmovies.data.MovieContract;
@@ -22,7 +23,7 @@ import com.grunskis.popularmovies.models.Trailer;
 
 import java.text.SimpleDateFormat;
 
-public class MovieDetailsActivity extends Activity implements
+public class MovieDetailsActivity extends AppCompatActivity implements
         TrailerAdapter.TrailerAdapterOnClickHandler {
 
     private static final String TAG = MovieDetailsActivity.class.getSimpleName();
@@ -36,6 +37,7 @@ public class MovieDetailsActivity extends Activity implements
     private TextView mPlot;
 
     private boolean mIsFavorite;
+    private Menu mMenu;
 
     private RecyclerView mTrailerList;
     private TrailerAdapter mTrailerAdapter;
@@ -104,18 +106,31 @@ public class MovieDetailsActivity extends Activity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.details_menu, menu);
+
+        if (mIsFavorite) {
+            menu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_black_24dp);
+        }
+
+        mMenu = menu;
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.favorite_yes_no) {
+            String toastMessage;
             if (!mIsFavorite) {
                 addMovieToFavorites(mMovie);
+                mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_black_24dp);
+                toastMessage = mMovie.getTitle() + " added to favorites!";
             } else {
                 removeMovieFromFavorites(mMovie);
+                mMenu.findItem(R.id.favorite_yes_no).setIcon(R.drawable.ic_star_border_black_24dp);
+                toastMessage = mMovie.getTitle() + " removed from favorites!";
             }
-            // TODO: 19.10.17 update icon
+            mIsFavorite = !mIsFavorite;
+            Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
             return true;
         }
 

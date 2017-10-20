@@ -8,6 +8,7 @@ import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Loader;
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -28,7 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends AppCompatActivity implements
         MoviePosterAdapter.MoviePosterAdapterOnClickHandler {
 
     private static final String TAG = MainActivity.class.getSimpleName() + "!!!";
