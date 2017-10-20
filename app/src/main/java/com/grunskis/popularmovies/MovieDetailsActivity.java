@@ -35,6 +35,8 @@ public class MovieDetailsActivity extends Activity implements
     private TextView mVoteAverage;
     private TextView mPlot;
 
+    private boolean mIsFavorite;
+
     private RecyclerView mTrailerList;
     private TrailerAdapter mTrailerAdapter;
 
@@ -66,7 +68,7 @@ public class MovieDetailsActivity extends Activity implements
         if (intent.hasExtra("movie")) {
             mMovie = intent.getParcelableExtra("movie");
 
-            boolean fav = isFavorite(mMovie);
+            mIsFavorite = isFavorite(mMovie);
 
             this.setTitle(mMovie.getTitle());
 
@@ -79,14 +81,14 @@ public class MovieDetailsActivity extends Activity implements
             mVoteAverage.setText(String.valueOf(rating.intValue()) + '%');
             mPlot.setText(mMovie.getPlot());
 
-            Trailer[] trailers = mMovie.getTrailers();
-            mTrailerAdapter = new TrailerAdapter(trailers, this);
-            mTrailerList.setAdapter(mTrailerAdapter);
-            // TODO: 18.10.17 show some text when there are no trailers available
-
-            Review[] reviews = mMovie.getReviews();
-            mReviewAdapter = new ReviewAdapter(reviews);
-            mReviewList.setAdapter(mReviewAdapter);
+//            Trailer[] trailers = mMovie.getTrailers();
+//            mTrailerAdapter = new TrailerAdapter(trailers, this);
+//            mTrailerList.setAdapter(mTrailerAdapter);
+//            // TODO: 18.10.17 show some text when there are no trailers available
+//
+//            Review[] reviews = mMovie.getReviews();
+//            mReviewAdapter = new ReviewAdapter(reviews);
+//            mReviewList.setAdapter(mReviewAdapter);
         }
     }
 
@@ -107,11 +109,15 @@ public class MovieDetailsActivity extends Activity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: 19.10.17 check if is a favorite already
-
-        addMovieToFavorites(mMovie);
-
-        // TODO: 19.10.17 update icon
+        if (item.getItemId() == R.id.favorite_yes_no) {
+            if (!mIsFavorite) {
+                addMovieToFavorites(mMovie);
+            } else {
+                removeMovieFromFavorites(mMovie);
+            }
+            // TODO: 19.10.17 update icon
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -128,14 +134,21 @@ public class MovieDetailsActivity extends Activity implements
         ContentValues contentValues = new ContentValues();
         contentValues.put(MovieContract.FavoriteMovieEntry.COL_MOVIE_ID, movie.getId());
         contentValues.put(MovieContract.FavoriteMovieEntry.COL_TITLE, movie.getTitle());
+        contentValues.put(MovieContract.FavoriteMovieEntry.COL_RELEASE_DATE,
+                movie.getReleaseDate().getTime());
+        contentValues.put(MovieContract.FavoriteMovieEntry.COL_POSTER_URL,
+                movie.getPosterUrl().toString());
+        contentValues.put(MovieContract.FavoriteMovieEntry.COL_VOTE_AVERAGE,
+                movie.getVoteAverage());
+        contentValues.put(MovieContract.FavoriteMovieEntry.COL_PLOT, movie.getPlot());
         getContentResolver().insert(MovieContract.FavoriteMovieEntry.CONTENT_URI, contentValues);
     }
 
     private void removeMovieFromFavorites(Movie movie) {
-        // String id = uri.getPathSegments().get(1);
-//        Uri uri = MovieContract.FavoriteMovieEntry.CONTENT_URI
-        //                .buildUpon()
-        //                .appendPath(String.valueOf(movie.getId()))}
-        //                .build();
+        Uri uri = MovieContract.FavoriteMovieEntry.CONTENT_URI
+                        .buildUpon()
+                        .appendPath(String.valueOf(movie.getId()))
+                        .build();
+        getContentResolver().delete(uri, null, null);
     }
 }

@@ -17,5 +17,9 @@ public class MovieContract {
 
         public static final String COL_MOVIE_ID = "movie_id";
         public static final String COL_TITLE = "title";
+        public static final String COL_RELEASE_DATE = "release_date";
+        public static final String COL_POSTER_URL = "poster_url";
+        public static final String COL_VOTE_AVERAGE = "vote_average";
+        public static final String COL_PLOT = "plot";
     }
 }

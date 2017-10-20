@@ -48,15 +48,15 @@ public class TMDBJsonUtils {
                 Double averageVote = movieJSON.getDouble("vote_average");
                 String plot = movieJSON.getString("overview");
 
-                URL trailersUrl = NetworkUtils.prepareTrailersUrl(id);
-                URL reviewsUrl = NetworkUtils.prepareReviewsUrl(id);
+                //URL trailersUrl = NetworkUtils.prepareTrailersUrl(id);
+                //URL reviewsUrl = NetworkUtils.prepareReviewsUrl(id);
 
+                // prepareTrailers(trailersUrl)
+                // prepareReviews(reviewsUrl)
                 movies[i] = new Movie(id, title,
                         prepareRelaseDate(releaseDate),
                         preparePosterUrl(posterPath),
-                        averageVote, plot,
-                        prepareTrailers(trailersUrl),
-                        prepareReviews(reviewsUrl));
+                        averageVote, plot);
             }
         } catch (JSONException e) {
             e.printStackTrace();

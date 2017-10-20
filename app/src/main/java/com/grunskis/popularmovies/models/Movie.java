@@ -14,19 +14,15 @@ public class Movie implements Parcelable {
     private URL mPosterUrl;
     private final double mVoteAverage;
     private final String mPlot;
-    private Trailer[] mTrailers;
-    private Review[] mReviews;
 
     public Movie(int id, String title, Date releaseDate, URL posterUrl, double voteAverage,
-                 String plot, Trailer[] trailers, Review[] reviews) {
+                 String plot) {
         mId = id;
         mTitle = title;
         mReleaseDate = releaseDate;
         mPosterUrl = posterUrl;
         mVoteAverage = voteAverage;
         mPlot = plot;
-        mTrailers = trailers;
-        mReviews = reviews;
     }
 
     @Override
@@ -42,8 +38,6 @@ public class Movie implements Parcelable {
         dest.writeString(mPosterUrl.toString());
         dest.writeDouble(mVoteAverage);
         dest.writeString(mPlot);
-        dest.writeTypedArray(mTrailers, 0);
-        dest.writeTypedArray(mReviews, 0);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
@@ -69,8 +63,6 @@ public class Movie implements Parcelable {
 
         mVoteAverage = src.readDouble();
         mPlot = src.readString();
-        mTrailers = src.createTypedArray(Trailer.CREATOR);
-        mReviews = src.createTypedArray(Review.CREATOR);
     }
 
     @Override
@@ -101,10 +93,4 @@ public class Movie implements Parcelable {
     public String getPlot() {
         return mPlot;
     }
-
-    public Trailer[] getTrailers() {
-        return mTrailers;
-    }
-
-    public Review[] getReviews() { return mReviews; }
 }
