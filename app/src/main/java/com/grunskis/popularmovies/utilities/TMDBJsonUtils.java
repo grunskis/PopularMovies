@@ -93,7 +93,7 @@ public class TMDBJsonUtils {
         return url;
     }
 
-    private static Trailer[] prepareTrailers(URL trailersUrl) {
+    public static Trailer[] getTrailers(URL trailersUrl) {
         Trailer[] trailers = null;
 
         String json = null;
@@ -126,7 +126,7 @@ public class TMDBJsonUtils {
         return trailers;
     }
 
-    private static Review[] prepareReviews(URL reviewsUrl) {
+    public static Review[] getReviews(URL reviewsUrl) {
         Review[] reviews = null;
 
         String json = null;

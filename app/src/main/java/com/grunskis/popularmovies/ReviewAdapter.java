@@ -16,8 +16,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     private Review[] mReviews;
 
-    public ReviewAdapter(Review[] reviews) {
+    public void setReviews(Review[] reviews) {
         mReviews = reviews;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -36,7 +37,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     @Override
     public int getItemCount() {
-        return mReviews.length;
+        if (mReviews == null) {
+            return 0;
+        } else {
+            return mReviews.length;
+        }
     }
 
     public class ReviewAdapterViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +52,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
         public ReviewAdapterViewHolder(View itemView) {
             super(itemView);
 
-            // TODO: 18.10.17 use binding?
             mAuthor = (TextView) itemView.findViewById(R.id.tv_author);
             mContent = (TextView) itemView.findViewById(R.id.tv_content);
         }

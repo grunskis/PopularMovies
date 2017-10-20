@@ -17,9 +17,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
 
     private final TrailerAdapterOnClickHandler mClickHandler;
 
-    public TrailerAdapter(Trailer[] trailers, TrailerAdapterOnClickHandler clickHandler) {
-        mTrailers = trailers;
+    public TrailerAdapter(TrailerAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
+    }
+
+    public void setTrailers(Trailer[] trailers) {
+        mTrailers = trailers;
+        notifyDataSetChanged();
     }
 
     @Override
