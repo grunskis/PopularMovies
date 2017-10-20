@@ -32,7 +32,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity implements
         MoviePosterAdapter.MoviePosterAdapterOnClickHandler {
 
-    private static final String TAG = MainActivity.class.getSimpleName() + "!!!";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final String SORT_ORDER_POPULAR = "popular";
     private static final String SORT_ORDER_TOP_RATED = "top_rated";
@@ -157,8 +157,6 @@ public class MainActivity extends AppCompatActivity implements
 
                 @Override
                 public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-                    Log.d(TAG, "loaded "+data.getCount());
-
                     hideLoadingSpinner();
 
                     if (data != null) {
