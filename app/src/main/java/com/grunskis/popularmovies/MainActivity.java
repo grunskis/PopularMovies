@@ -41,13 +41,20 @@ public class MainActivity extends AppCompatActivity implements
     private static final String SHOW_LOADING = "show_loading";
     private static final String CURRENT_SORT_ORDER = "current_sort_order";
 
-    // TODO: 20.10.17 add projection
-    public static final int INDEX_MOVIE_ID = 1;
-    public static final int INDEX_MOVIE_TITLE = 2;
-    public static final int INDEX_MOVIE_RELEASE_DATE = 3;
-    public static final int INDEX_MOVIE_POSTER_URL = 4;
-    public static final int INDEX_MOVIE_VOTE_AVERAGE = 5;
-    public static final int INDEX_MOVIE_PLOT = 6;
+    public static final String[] FAVORITE_MOVIE_PROJECTION = {
+            MovieContract.FavoriteMovieEntry.COL_MOVIE_ID,
+            MovieContract.FavoriteMovieEntry.COL_TITLE,
+            MovieContract.FavoriteMovieEntry.COL_RELEASE_DATE,
+            MovieContract.FavoriteMovieEntry.COL_POSTER_URL,
+            MovieContract.FavoriteMovieEntry.COL_VOTE_AVERAGE,
+            MovieContract.FavoriteMovieEntry.COL_PLOT,
+    };
+    public static final int INDEX_MOVIE_ID = 0;
+    public static final int INDEX_MOVIE_TITLE = 1;
+    public static final int INDEX_MOVIE_RELEASE_DATE = 2;
+    public static final int INDEX_MOVIE_POSTER_URL = 3;
+    public static final int INDEX_MOVIE_VOTE_AVERAGE = 4;
+    public static final int INDEX_MOVIE_PLOT = 5;
 
     private static final int API_DATA_LOADER_ID = 1;
     private static final int DB_DATA_LOADER_ID = 2;
@@ -145,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     return new CursorLoader(MainActivity.this,
                             MovieContract.FavoriteMovieEntry.CONTENT_URI,
-                            null, null, null, null);
+                            FAVORITE_MOVIE_PROJECTION, null, null, null);
                 }
 
                 @Override
