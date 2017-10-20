@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"> <!-- todo background touch selector -->
+    android:layout_height="wrap_content"
+    android:background="@drawable/trailer_list_item_selector">
 
     <TextView
         android:id="@+id/tv_trailer"
@@ -15,7 +16,8 @@
         android:gravity="center_vertical"
         android:padding="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="Trailer 1" />
+        tools:text="Trailer 1"
+        android:background="?android:attr/selectableItemBackground"/>
 
     <View
         android:id="@+id/item_divider"
