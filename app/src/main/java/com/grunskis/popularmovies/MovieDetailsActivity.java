@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private static final int TRAILER_LOADER_ID = 1;
     private static final int REVIEW_LOADER_ID = 2;
 
+    private static final String SCROLL_POSITION = "scroll_position";
+
     private Movie mMovie;
 
     private ImageView mPosterThumbnail;
@@ -50,6 +53,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private boolean mIsFavorite;
     private Menu mMenu;
+    private ScrollView mScrollView;
 
     private RecyclerView mTrailerList;
     private TrailerAdapter mTrailerAdapter;
@@ -100,6 +104,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoadFinished(Loader<Trailer[]> loader, Trailer[] data) {
                     if (data != null) {
                         mTrailerAdapter.setTrailers(data);
+                        mTrailers = data;
 
                         if (data.length > 0) {
                             mNoTrailers.setVisibility(View.GONE);
@@ -116,6 +121,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 }
             };
     private TextView mNoTrailers;
+    private Trailer[] mTrailers;
 
     private RecyclerView mReviewList;
     private ReviewAdapter mReviewAdapter;
@@ -166,6 +172,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 public void onLoadFinished(Loader<Review[]> loader, Review[] data) {
                     if (data != null) {
                         mReviewAdapter.setReviews(data);
+                        mReviews = data;
 
                         if (data.length > 0) {
                             mNoReviews.setVisibility(View.GONE);
@@ -182,11 +189,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 }
             };
     private TextView mNoReviews;
+    private Review[] mReviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+
+        mScrollView = (ScrollView) findViewById(R.id.sv_main);
 
         mPosterThumbnail = (ImageView) findViewById(R.id.iv_poster_thumbnail);
         mTitle = (TextView) findViewById(R.id.tv_title);
@@ -230,19 +240,51 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             mVoteAverage.setText(String.valueOf(rating.intValue()) + '%');
             mPlot.setText(mMovie.getPlot());
 
-            LoaderManager loaderManager = getLoaderManager();
 
-            Bundle bundle = new Bundle();
-            bundle.putInt("movieId", mMovie.getId());
+            if (savedInstanceState != null) {
+                mTrailers = (Trailer[]) savedInstanceState.getParcelableArray("trailers");
+                mReviews = (Review[]) savedInstanceState.getParcelableArray("reviews");
+            }
 
             mTrailerAdapter = new TrailerAdapter(this);
             mTrailerList.setAdapter(mTrailerAdapter);
-            loaderManager.restartLoader(TRAILER_LOADER_ID, bundle, trailerLoaderCallbacks);
 
             mReviewAdapter = new ReviewAdapter();
             mReviewList.setAdapter(mReviewAdapter);
-            loaderManager.restartLoader(REVIEW_LOADER_ID, bundle, reviewLoaderCallbacks);
+
+            if (mTrailers != null && mReviews != null) {
+                mTrailerAdapter.setTrailers(mTrailers);
+                mReviewAdapter.setReviews(mReviews);
+
+                if (savedInstanceState != null) {
+                    final int[] scrollPosition = savedInstanceState.getIntArray(SCROLL_POSITION);
+                    if (scrollPosition != null) {
+                        mScrollView.post(new Runnable() {
+                            public void run() {
+                                mScrollView.scrollTo(scrollPosition[0], scrollPosition[1]);
+                            }
+                        });
+                    }
+                }
+            } else {
+                LoaderManager loaderManager = getLoaderManager();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("movieId", mMovie.getId());
+
+                loaderManager.restartLoader(TRAILER_LOADER_ID, bundle, trailerLoaderCallbacks);
+                loaderManager.restartLoader(REVIEW_LOADER_ID, bundle, reviewLoaderCallbacks);
+            }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArray("trailers", mTrailers);
+        outState.putParcelableArray("reviews", mReviews);
+        outState.putIntArray(SCROLL_POSITION,
+                new int[]{mScrollView.getScrollX(), mScrollView.getScrollY()});
     }
 
     @Override
