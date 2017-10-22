@@ -254,7 +254,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             if (mTrailers != null && mReviews != null) {
                 mTrailerAdapter.setTrailers(mTrailers);
+                if (mTrailers.length > 0) {
+                    mNoTrailers.setVisibility(View.GONE);
+                } else {
+                    mNoTrailers.setVisibility(View.VISIBLE);
+                }
                 mReviewAdapter.setReviews(mReviews);
+                if (mReviews.length > 0) {
+                    mNoReviews.setVisibility(View.GONE);
+                } else {
+                    mNoReviews.setVisibility(View.VISIBLE);
+                }
 
                 if (savedInstanceState != null) {
                     final int[] scrollPosition = savedInstanceState.getIntArray(SCROLL_POSITION);
