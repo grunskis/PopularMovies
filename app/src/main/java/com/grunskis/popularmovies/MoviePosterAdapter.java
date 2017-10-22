@@ -28,6 +28,8 @@ public class MoviePosterAdapter extends
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.poster, parent, false);
+        int height = parent.getMeasuredHeight() / 2;
+        view.setMinimumHeight(height);
         return new MoviePosterAdapterViewHolder(view);
     }
 
