@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Loader;
-import android.app.Activity;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String SHOW_LOADING = "show_loading";
     private static final String CURRENT_SORT_ORDER = "current_sort_order";
+    private static final String RV_STATE = "rvstate";
+    private static final String MOVIES = "movies";
 
     public static final String[] FAVORITE_MOVIE_PROJECTION = {
             MovieContract.FavoriteMovieEntry.COL_MOVIE_ID,
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements
             if (data != null) {
                 hideErrorMessage();
                 mMoviePosterAdapter.setMovies(data);
+                mMovies = data;
             } else {
                 showErrorMessage();
                 Log.e(TAG, "Failed to fetch movies");
@@ -189,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements
                         }
 
                         mMoviePosterAdapter.setMovies(movies);
+                        mMovies = movies;
                     } else {
                         showErrorMessage();
                         Log.e(TAG, "Failed to fetch movies from DB");
@@ -203,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private MoviePosterAdapter mMoviePosterAdapter;
     private RecyclerView mRecyclerView;
+    private Parcelable mRecyclerViewState;
+    private Movie[] mMovies;
 
     private View mErrorView;
 
@@ -245,10 +251,18 @@ public class MainActivity extends AppCompatActivity implements
             String sortOrder = savedInstanceState.getString(CURRENT_SORT_ORDER);
             if (sortOrder != null) {
                 mSortOrder = sortOrder;
+                setTitle();
             }
+            mRecyclerViewState = savedInstanceState.getParcelable(RV_STATE);
+            mMovies = (Movie[])savedInstanceState.getParcelableArray(MOVIES);
         }
 
-        loadMoviePosters();
+        if (mMovies != null && mRecyclerViewState != null) {
+            mMoviePosterAdapter.setMovies(mMovies);
+            layoutManager.onRestoreInstanceState(mRecyclerViewState);
+        } else {
+            loadMoviePosters();
+        }
     }
 
     @Override
@@ -257,6 +271,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         outState.putBoolean(SHOW_LOADING, isLoading);
         outState.putString(CURRENT_SORT_ORDER, mSortOrder);
+        outState.putParcelable(RV_STATE, mRecyclerView.getLayoutManager().onSaveInstanceState());
+        outState.putParcelableArray(MOVIES, mMovies);
     }
 
     private int numberOfColumns() {
@@ -272,8 +288,7 @@ public class MainActivity extends AppCompatActivity implements
     private void loadMoviePosters() {
         mMoviePosterAdapter.setMovies(null);
 
-        int titleStringId = getResources().getIdentifier(mSortOrder, "string", getPackageName());
-        this.setTitle(getString(titleStringId));
+        setTitle();
 
         LoaderManager loaderManager = getLoaderManager();
 
@@ -287,6 +302,11 @@ public class MainActivity extends AppCompatActivity implements
 
             loaderManager.restartLoader(API_DATA_LOADER_ID, urlBundle, apiLoaderCallbacks);
         }
+    }
+
+    private void setTitle() {
+        int titleStringId = getResources().getIdentifier(mSortOrder, "string", getPackageName());
+        this.setTitle(getString(titleStringId));
     }
 
     @Override
@@ -332,6 +352,8 @@ public class MainActivity extends AppCompatActivity implements
 
         item.setChecked(true);
 
+        mMovies = null;
+        mRecyclerViewState = null;
         loadMoviePosters();
 
         return super.onOptionsItemSelected(item);
